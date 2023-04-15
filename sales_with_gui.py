@@ -8,11 +8,11 @@ from tkinter import filedialog
 import csv
 
 class SalesPredictionGUI:
-
+    
     def __init__(self, master):
         self.master = master
         master.title("Sales Growth Prediction")
-
+              
         self.add_title_labal = tk.Label(master, text="Sales predictor", font=('Arial', 24) , bg='yellow', fg='green')
         self.add_title_labal.pack()
 
@@ -36,11 +36,11 @@ class SalesPredictionGUI:
     def add_data(self):
         # Open a file dialog to select a CSV file with sales data
         file_path = filedialog.askopenfilename(title="Select Sales Data File", filetypes=[("CSV Files", "*.csv")])
-
+        self.filepath = file_path
         # Load the data into the DataFrame
         new_data = pd.read_csv(file_path)
         self.data = self.data.append(new_data, ignore_index=True)
-
+        
     def view_data(self):
          # Create the table window
         table_window = tk.Toplevel(root)
@@ -155,7 +155,7 @@ class SalesPredictionGUI:
         plt.show()
      
     def add_data_to_csv(self):
-
+        
       # Create the form window
         form_window = tk.Toplevel(root)
         form_window.title('Add Data')
@@ -182,15 +182,15 @@ class SalesPredictionGUI:
 
         def add_data(year, month, sales):
              
-             with open('sales_data.csv', mode='r') as file:
-                reader = csv.reader('tilak_di_hatti_sales.csv')
+             with open(self.filepath, mode='r') as file:
+                reader = csv.reader(file)
                 for row in reader:
                     if row[0] == year and row[1] == month :
                     # Data already exists, show error message and return
                         tk.messagebox.showerror('Error', 'Data already exists in the file.')
                         return
         # Append the data to the CSV file
-             with open('tilak_di_hatti_sales.csv', mode='a', newline='') as file:
+             with open(self.filepath, mode='a', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow([year, month, sales])
                 tk.messagebox.showinfo('Success', 'Data added successfully.')
